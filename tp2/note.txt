@@ -1,0 +1,39 @@
+https://chatgpt.com/c/66ed8195-c6c8-800b-8324-50786f990de9
+
+EXO 3:
+Quand vous omettez de définir des constructeurs dans LaClasseSpecialisee :
+
+Si vous ne définissez pas de constructeurs dans la classe dérivée LaClasseSpecialisee, le compilateur fournira automatiquement un constructeur par défaut et un constructeur de copie en appelant les constructeurs de la classe de base (LaClasse). Cependant, si vous avez des membres spécifiques dans LaClasseSpecialisee (comme extra dans cet exemple), ces membres ne seront pas initialisés correctement sans vos constructeurs explicites.
+Quand vous omettez de définir un constructeur par copie :
+
+Si vous n'implémentez pas explicitement un constructeur par copie dans LaClasseSpecialisee, le compilateur en génèrera un automatiquement qui effectuera une copie superficielle des membres (pointeurs inclus). Cela peut entraîner des erreurs lorsque des ressources dynamiques sont partagées entre plusieurs objets après la copie (comme extra ici), provoquant potentiellement des erreurs de double libération (delete).
+Quand vous oubliez d'utiliser des listes d'initialisation dans les constructeurs :
+
+Si vous n'utilisez pas les listes d'initialisation, les membres de la classe de base seront d'abord initialisés par leurs constructeurs par défaut avant d'être réaffectés. Cela entraîne une surcharge inutile. Dans notre exemple, si vous omettez d'initialiser LaClasse(i) dans LaClasseSpecialisee(int i, int j), l'attribut l sera d'abord initialisé à 0 par défaut, puis réassigné à i, ce qui est inefficace.
+
+
+
+
+Upcasting (Pointeur vers classe de base)
+L'upcasting est le processus par lequel vous convertissez un pointeur ou une référence d'une classe dérivée en un pointeur ou une référence vers une classe de base. Il est sécurisé et ne nécessite aucune conversion explicite.
+
+LaClasseSpecialisee s;
+LaClasse* base_ptr = &s;  // Upcast vers LaClasse
+
+
+
+Downcasting (Pointeur vers classe dérivée)
+Le downcasting est l'opération inverse où vous convertissez un pointeur vers une classe de base en un pointeur vers une classe dérivée. Il peut être risqué et nécessite généralement l'utilisation de dynamic_cast pour garantir la sécurité du cast.
+
+LaClasse* base_ptr = new LaClasseSpecialisee();
+LaClasseSpecialisee* derived_ptr = dynamic_cast<LaClasseSpecialisee*>(base_ptr);
+if (derived_ptr)
+{
+    std::cout << "Downcast réussi\n";
+}
+else
+{
+    std::cout << "Downcast échoué\n";
+}
+delete base_ptr;
+
